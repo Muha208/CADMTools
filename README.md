@@ -1,8 +1,8 @@
 # CADMTools
 
 # Description:
- CADMTools using AutoCAD API to help user when select Polyline to get information and make some mathematics To get (Length,Area,Volume),
- That help to make a quantity tabls for (Walls,Palster,Flooring,.....etc 
+
+CADMTools use AutoCAD API to help the user when selecting Polyline to get information and make some mathematics To get (Length, Area, Volume), That help to make quantity tables for (Walls, Plaster, Flooring,.....etc 
  
 # Development Tools:
 1- C# 
