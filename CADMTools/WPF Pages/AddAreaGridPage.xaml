@@ -1,0 +1,172 @@
+﻿<UserControl x:Class="CADMTools.WPF_Pages.AddAreaGridPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CADMTools.WPF_Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="430" d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CADMTools;component/Resources/Main_ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border CornerRadius="10" Background="#FF26263D">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" x:Name="ToolBar"/>
+                <RowDefinition Height="245" x:Name="FiltersRow"/>
+                <RowDefinition Height="150" x:Name="GridRow"/>
+                <RowDefinition Height="20" x:Name="SateBar"/>
+            </Grid.RowDefinitions>
+            <!--#region ToolWindow Bar -->
+            <Border Background="#7F000000" 
+                    Grid.Row="0" Grid.ColumnSpan="3" >
+                <StackPanel x:Name="Main_ToolBar_Area" 
+                        HorizontalAlignment="Stretch" 
+                        Orientation="Horizontal"
+                        FlowDirection="RightToLeft"
+                        VerticalAlignment="Stretch">
+                    <Button Style="{DynamicResource Bt_St_Close}" x:Name="Bt_Close_Area" Content="X"
+                        FontSize="13" FontWeight="Medium"
+                        Height="20" Width="20" 
+                        Margin="5"
+                        HorizontalContentAlignment="Center"
+                        FontFamily="Arial Rounded MT Bold"/>
+                    <Button Style="{DynamicResource Bt_St_Min}" x:Name="Bt_Min_Area" 
+                        FontSize="30" FontWeight="ExtraLight"
+                        Height="20" Width="20" 
+                        Margin="0,5,5,5"
+                        FontFamily="Arial Rounded MT Bold">
+                        <Button.Content>
+                            <TextBlock Text="-" Margin="0,-10,0,0"/>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+            </Border>
+            <!--#endregion-->
+            <!--#region Data Table Controls -->
+            <Grid Margin="20,0,20,0" Grid.Row=" 1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <!--#region Columns Edit Area -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Table Name"
+                       Grid.Column="0" Height="25"
+                       Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                        <TextBox Style="{DynamicResource TextBoxStyle_total}" 
+                        x:Name="Tx_TableName"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Background="#FFFDFEFF"
+                        Height="25"
+                        Margin="5,0,5,0"
+                        FontSize="12" IsReadOnly="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_AddArea" 
+                            Content="Add Area"
+                            Height="25" Width="80" Grid.Row="0"
+                            Margin="5,10" VerticalAlignment="Bottom"
+                            FontSize="12" FontWeight="Bold" 
+                            HorizontalAlignment="Right" Cursor="Hand" Background="#FF0E7B21" Foreground="White"/>
+                        <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_SubArea" 
+                            Content="Sub Area"
+                            Height="25" Width="80" Grid.Row="0"
+                            Margin="5,10" VerticalAlignment="Bottom"
+                            FontSize="12" FontWeight="Bold" 
+                            HorizontalAlignment="Right" Cursor="Hand" Foreground="White" Background="#FF530808"/>
+                    </StackPanel>
+                </Grid>
+                <!--#endregion-->
+                <!--#region Table Edit Area -->
+                <Label Content="Edit Columns"
+                       Grid.Column="0" Height="25"  Grid.Row="1"
+                       Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                       FontSize="14" FontWeight="Bold" Foreground="White"/>
+                <Border BorderThickness ="1" BorderBrush="#FFB8B4B1" Margin="0,30,0,0" 
+                        Grid.Column=" 1" Grid.ColumnSpan="2" Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Select Column To Edit"
+                                   Grid.Column="0" Height="25"  
+                                   Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                   FontSize="12" FontWeight="Bold" Foreground="White"/>
+                            <ComboBox x:Name="Cb_ColumnsName" Margin="5,5,5,0">
+
+                            </ComboBox>
+                            <Label Content="Change Name"
+                                   Grid.Column="0" Height="25"
+                                   Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                   FontSize="12" FontWeight="Bold" Foreground="White"/>
+                            <TextBox Style="{DynamicResource TextBoxStyle_total}" 
+                        x:Name="Tx_ChangeColumnName"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Background="White"
+                        Height="25"
+                        Margin="5,5,5,0"
+                        FontSize="12" IsReadOnly="True"/>
+                            <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_DeleteColumn" 
+                    Content="Delete Column"
+                    Height="25" Grid.Row="0"
+                    Margin="5,10,5,5" VerticalAlignment="Center"
+                    FontSize="12" FontWeight="Bold" 
+                    HorizontalAlignment="Stretch" Cursor="Hand" Background="#FF530D0D" Foreground="White"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Label Content="New Column Name"
+                       Grid.Column="0" Height="25"
+                       Margin="0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                            <TextBox Style="{DynamicResource TextBoxStyle_total}" 
+                        x:Name="Tx_AddColumn"
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Background="White"
+                        Height="25"
+                        Margin="5,5,5,0"
+                        FontSize="12" IsReadOnly="True"/>
+                            <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_AddColumn" 
+                                    Content="Add Column"
+                                    Height="25" Grid.Row="0"
+                                    Margin="5,10,5,5" VerticalAlignment="Center"
+                                    FontSize="12" FontWeight="Bold" 
+                                    HorizontalAlignment="Stretch" Cursor="Hand" 
+                                    Background="#FF0E7B21" Foreground="White"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!--#endregion-->
+            </Grid>
+            <!--#endregion-->
+            <!--#region GridView (Layers Name)-->
+            <DataGrid x:Name="Dg_AddAreaColumns" 
+                      Grid.Row="2" 
+                      Grid.Column="1"
+                      Margin="20,10" 
+                      HorizontalContentAlignment="Center" 
+                      VerticalContentAlignment="Center" 
+                      FontSize="14"
+                      ItemsSource="{Binding}" HorizontalGridLinesBrush="#FF15133D" VerticalGridLinesBrush="#FF15133D" MinRowHeight="20"/>
+            <!--#endregion-->
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,343 @@
+﻿<Window x:Class="CADMTools.WPF_Pages.MainPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CADMTools.WPF_Pages"
+             mc:Ignorable="d" 
+             Background="Transparent"
+             WindowStyle="None" WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize" HorizontalContentAlignment="Stretch" 
+        VerticalContentAlignment="Stretch" AllowsTransparency="True" 
+        SizeToContent="WidthAndHeight" Title="CADMTools" Loaded="Window_Loaded" 
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CADMTools;component/Resources/Main_ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border CornerRadius="10" Background="#FF26263D">
+        <Grid Background="Transparent" AllowDrop="True" Focusable="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="150" MinWidth="10" Name="ToolsMenu"/>
+                <ColumnDefinition Width="470" Name="MainColumn"/>
+                <ColumnDefinition Width="225" Name="ExtraColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" x:Name="ToolBar"/>
+                <RowDefinition Height="10" x:Name="BottunsRow"/>
+                <RowDefinition Height="100" x:Name="FiltersRow"/>
+                <RowDefinition Height="200" x:Name="GridRow"/>
+                <RowDefinition Height="35" x:Name="EditBar"/>
+                <RowDefinition Height="20" x:Name="SateBar"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_JoinPolyLines" 
+                    Grid.Row="4" Content="Join Polylines"
+                    Height="25" Width="105" Grid.Column="1"
+                    Margin="10,0,0,0" VerticalAlignment="Top"
+                    FontSize="12" FontWeight="Bold" 
+                    HorizontalAlignment="Left" Cursor="Hand" Click="Bt_JoinPolyLines_Click"/>
+                <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_PolyLinesTypeMark" 
+                                                 Content="Mark Polylines"
+                                                 Height="25" Width="95" Grid.Row="4" Grid.Column="1"
+                                                 Margin="5,0,5,0" VerticalAlignment="Top"
+                                                 FontSize="12" FontWeight="Bold" 
+                                                 HorizontalAlignment="Left" Cursor="Hand" Click="Bt_PolyLinesTypeMark_Click"/>
+            </StackPanel>
+            <!--#region ToolWindow Bar -->
+            <Border Background="#7F000000" 
+                    Grid.Row="0" Grid.ColumnSpan="3" >
+                <StackPanel x:Name="Main_ToolBar" 
+                        HorizontalAlignment="Stretch" 
+                        Orientation="Horizontal"
+                        FlowDirection="RightToLeft"
+                        VerticalAlignment="Stretch">
+                    <Button Style="{DynamicResource Bt_St_Close}" x:Name="Bt_Close" Content="X"
+                        FontSize="13" FontWeight="Medium"
+                        Height="20" Width="20" 
+                        Margin="5"
+                        HorizontalContentAlignment="Center"
+                        Click="Bt_Close_Click" FontFamily="Arial Rounded MT Bold"/>
+                    <Button Style="{DynamicResource Bt_St_Min}" x:Name="Bt_Min" 
+                        FontSize="30" FontWeight="ExtraLight"
+                        Height="20" Width="20" 
+                        Margin="0,5,5,5"
+                        Click="Bt_Min_Click" FontFamily="Arial Rounded MT Bold">
+                        <Button.Content>
+                            <TextBlock Text="-" Margin="0,-10,0,0"/>
+                        </Button.Content>
+                    </Button>
+                    <TextBlock Text="CADMTools" 
+                               Foreground="White"
+                               Margin="270,0,0,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               FontSize="15" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+            <!--#endregion-->
+            <!--#region Buttom Window Bar -->
+            <Border Background="#7F000000" 
+                    Grid.Row="5" Grid.ColumnSpan="3">
+                <TextBlock x:Name="Lb_Log" Text="State" 
+                           Foreground="#FF8D8D8D"
+                           Margin="20,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="10"/>
+            </Border>
+            <!--#endregion-->
+            <!--#region GridView (Layers Name)-->
+            <DataGrid x:Name="Dg_NameOfLayers" 
+                      Grid.Row="3" 
+                      Grid.Column="1"
+                      Margin="10" 
+                      HorizontalContentAlignment="Center" 
+                      VerticalContentAlignment="Center" 
+                      FontSize="14"
+                      ItemsSource="{Binding}" HorizontalGridLinesBrush="#FF15133D" VerticalGridLinesBrush="#FF15133D" MinRowHeight="20" SelectionChanged="Dg_NameOfLayers_SelectionChanged" CellEditEnding="Dg_NameOfLayers_CellEditEnding"/>
+            <!--#endregion-->
+            <!--#region Text Total Boxs -->
+            <Grid Grid.Column="2" Grid.Row="3" Margin="0,10,5,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+
+                <!--#region Page Table -->
+                <Border Margin="0" Grid.ColumnSpan="1" BorderBrush="#FFB8B4B1"  BorderThickness="1">
+                    <TabControl Margin="0" Background="Transparent" 
+                                x:Name="TabC_Pages"
+                                BorderBrush="Transparent" BorderThickness="0" 
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch" SelectionChanged="TabC_Pages_SelectionChanged">
+                        <TabItem Style="{DynamicResource TabItemStyle}" x:Name="Walls" 
+                                 Header="Walls" FontWeight="Bold" Foreground="White"
+                                 Height="30" Width="60" BorderBrush="Transparent" 
+                                 BorderThickness="0" Margin="1,0,0,-1" 
+                                 VerticalAlignment="Bottom" Cursor="Hand" ToolTip="Walls">
+                            <Border Margin="0,-4,0,0" BorderThickness="0,1,0,0" 
+                                    CornerRadius="0" BorderBrush="Gray"
+                                    HorizontalAlignment="Stretch">
+                                <TabPanel x:Name="Tp_Walls" Margin="2,0,-1,0" VerticalAlignment="Stretch" 
+                                          HorizontalAlignment="Stretch">
+                                    <StackPanel Grid.Column="0" Orientation="Vertical" 
+                                            Margin="0,8,0,0" VerticalAlignment="Stretch">
+                                        <Label Content="Total Length"
+                                           Grid.Column="0" Height="25"
+                                           Margin="0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                        <Label Content="Wall Thickness"
+                                           Grid.Column="0" Height="25" Margin="0,5,0,0" Width="100"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                        <Label Content="(According Filter Selection)"
+                                               FontSize="6" HorizontalAlignment="Left"
+                                               Margin="3,-10,0,0" Foreground="White"/>
+                                        <Label Content="Total Volume"
+                                           Grid.Column="0" Height="25" Margin="0,5,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,8,0,0" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Stretch"
+                                                    Height="105">
+                                        <TextBox x:Name="Tx_Total_Length"
+                                                    Style="{DynamicResource TextBoxStyle_total}" 
+                                                    Grid.Row="1" Grid.Column="1"
+                                                    HorizontalAlignment="Left"
+                                                    Background="White"
+                                                    Width="105" Height="25" 
+                                                    FontSize="12" IsReadOnly="True"/>
+                                        <TextBox Style="{DynamicResource TextBoxStyle_total}" 
+                                                     x:Name="Tx_Wall_Thickness"
+                                                     Grid.Row="1" Grid.Column="1"
+                                                     HorizontalAlignment="Left"
+                                                     Background="White"
+                                                     Width="105" Height="25"
+                                                     Margin="0,10,0,0"
+                                                     FontSize="12" IsReadOnly="True" IsEnabled="False"/>
+                                        <TextBox Style="{DynamicResource TextBoxStyle_total}" 
+                                                     x:Name="Tx_Total_Volume"
+                                                     Grid.Row="1" Grid.Column="1"
+                                                     HorizontalAlignment="Left"
+                                                     Background="White"
+                                                     Width="105" Height="25"
+                                                     Margin="0,10,0,0"
+                                                     FontSize="12" IsReadOnly="True"/>
+                                    </StackPanel>
+                                </TabPanel>
+                            </Border>
+                        </TabItem>
+                        <TabItem Style="{DynamicResource TabItemStyle}" x:Name="Plaster" 
+                                 Header="Plaster" FontWeight="Bold" Foreground="White"
+                                 Height="30" Width="60" BorderBrush="Transparent" 
+                                 BorderThickness="0" Margin="1,0,0,-1" VerticalAlignment="Bottom" Cursor="Hand" ToolTip="Plaster">
+                            <Border Margin="0,-4,0,0" BorderThickness="0,1,0,0" CornerRadius="0" BorderBrush="Gray">
+                                <TabPanel x:Name="Tp_Palster" Margin="2,0,-1,0" VerticalAlignment="Stretch">
+                                    <StackPanel Grid.Column="0" Orientation="Vertical" 
+                                            
+                                            Margin="0,0,0,5" VerticalAlignment="Stretch">
+                                        <Label Content="Total Area"
+                                           Grid.Column="0" Height="25"
+                                           Margin="0,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                        <Label Content="Total Length"
+                                           Grid.Column="0" Height="25" Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontSize="12" FontWeight="Bold" Foreground="White"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,5,0,5" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Stretch"
+                                        Height="160">
+                                        <TextBox 
+                                            Style="{DynamicResource TextBoxStyle_total}"
+                                            x:Name="Tx_Total_Area_Plaster"
+                                            Grid.Row="1" Grid.Column="1"
+                                            HorizontalAlignment="Left"
+                                            Background="White"
+                                            Width="105" Height="25"
+                                            FontSize="12" IsReadOnlyCaretVisible="True" IsReadOnly="True"/>
+                                        <TextBox x:Name="Tx_Total_Length_Plaster"
+                                                 Style="{DynamicResource TextBoxStyle_total}"
+                                                 Grid.Row="1" Grid.Column="1"
+                                                 HorizontalAlignment="Left"
+                                                 Background="White"
+                                                 Width="105" Height="25" Margin="0,5,0,0"
+                                                 FontSize="12" IsReadOnlyCaretVisible="True" IsReadOnly="True"/>
+                                    </StackPanel>
+                                </TabPanel>
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </Border>
+                <!--#endregion-->
+                <StackPanel Grid.Row="1"  Orientation="Horizontal" Margin="0">
+                    <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_AddOrSubArea" 
+                                                 Content="Add/Sub Area"
+                                                 Height="25" Width="95" Grid.Row="2" Grid.Column="0"
+                                                 Margin="0,0,5,0" VerticalAlignment="Center"
+                                                 FontSize="12" FontWeight="Bold" 
+                                                 HorizontalAlignment="Left" Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+            <!--#endregion-->
+            <!--#region Select Bt And CB OF Filter Areas -->
+            <StackPanel x:Name="St_FilterArea"
+                        Grid.Column="1" Grid.Row="2" Orientation="Horizontal" 
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2"
+                                Grid.Row="0">
+                        <Label Content="Filtered By" Height="25" Width="80"
+                       Margin="0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                        <ComboBox Name="Cb_FilterSelection" Width="160"
+                      Grid.Column="1" Grid.Row="1" Height="25"
+                      Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                      FontSize="12" FontWeight="Bold" SelectionChanged="Cb_FilterSelection_SelectionChanged" BorderBrush="{x:Null}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2"
+                                Grid.Row="1">
+                        <Label Content="Filter Result" Height="25" Width="80"
+                       Margin="0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                        <ComboBox Name="Cb_FilteredResult" Width="160"
+                      Grid.Column="1" Grid.Row="1" Height="25"
+                      Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                      FontSize="12" FontWeight="Bold" SelectionChanged="Cb_FilteredResult_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2"
+                                Grid.Row="2">
+                        <Button x:Name="Bt_Selection_PolyLine" 
+                                Style="{DynamicResource ButtonAny}"
+                                Content="Select PolyLine"
+                    Height="25" Width="105" Grid.Row="2" Grid.Column="1"
+                    Margin="5,5,5,0" VerticalAlignment="Center"
+                    FontSize="12" FontWeight="Bold" 
+                    Click="Bt_Selection_PolyLine_Click"
+                    HorizontalAlignment="Left" Cursor="Hand"/>
+                        <Button Style="{DynamicResource ButtonAny}" x:Name="Bt_AutoTypeMark" 
+                                Content="Auto TypeMark"
+                    Height="25" Width="105" Grid.Row="2" Grid.Column="0"
+                    Margin="5,5,0,0" VerticalAlignment="Center"
+                    FontSize="12" FontWeight="Bold" 
+                    HorizontalAlignment="Left" Cursor="Hand" Click="Bt_AutoTypeMark_Click"/>
+                    </StackPanel>
+                </Grid>
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
+                        <Label Content="Columns (Hide And Show)"
+                       Grid.Column="0" Height="25"  Width="210"
+                       Margin="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                        <ListBox Style="{DynamicResource ListBox_Style}" Name="Lsb_Filter"
+                      Height="70" HorizontalAlignment="Stretch"
+                      Margin="5" VerticalAlignment="Stretch"
+                      FontSize="12" FontWeight="Bold" MouseMove="Lsb_Filter_MouseMove"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <!--#endregion-->
+            <!--#region Information -->
+            <Border Margin="0,10,5,0" Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="1" 
+                    BorderBrush="#FFB8B4B1"  BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.ColumnSpan="2" Content="Selected Polyline Information" Height="25"
+                       Margin="0,5" VerticalAlignment="Top" HorizontalAlignment="Center"
+                       FontSize="12" FontWeight="Bold" Foreground="White"/>
+                    <Border Grid.Row="1" Grid.Column="0"  CornerRadius="0" BorderThickness="0,1,1,0" BorderBrush="#FFB8B4B1">
+                        <StackPanel>
+                            <Label   Content="Polyline Id" Height="15" Padding="0"
+                       Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left"
+                       FontSize="10" FontWeight="Bold" Foreground="White"/>
+                            <Label   Content="Polyline Width" Height="15" Padding="0"
+                       Margin="5,0,5,5" VerticalAlignment="Top" HorizontalAlignment="Left"
+                       FontSize="10" FontWeight="Bold" Foreground="White"/>
+                        </StackPanel>
+                    </Border>
+                    <!---->
+                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="0" BorderThickness="0,1,0,0" BorderBrush="#FFB8B4B1">
+                        <StackPanel>
+                            <Label  x:Name="Lb_PolylineID" Height="15" Padding="0"
+                       Margin="5,5" VerticalAlignment="Top" HorizontalAlignment="Left"
+                       FontSize="8" Foreground="White" Opacity="70"/>
+                            <Label  x:Name="Lb_PolylineWidth" Height="15" Padding="0"
+                       Margin="5,0,5,5" VerticalAlignment="Top" HorizontalAlignment="Left"
+                       FontSize="8" Foreground="White" Opacity="70"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+            <!--#endregion-->
+        </Grid>
+    </Border>
+</Window>
